@@ -1,0 +1,107 @@
+unit Unit5;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, uCmdBox, Forms, Controls,
+  Graphics, Dialogs, ExtCtrls, StdCtrls, Menus, Unit6, matrizX, sPila;
+
+type
+  TVariable=class
+    varname: string;
+    varvalue: string;
+    varmatriz:TMatriz;
+    varvector:TSPila;
+    varfloat: real;
+    typevalue: integer;
+    function validname(): boolean;
+    function validvalue(): boolean;
+    public
+      constructor create();
+      constructor create(name: string; value: string);
+    private
+  end;
+
+  function validfloat(floatstr:string): boolean;
+
+implementation
+
+constructor TVariable.create();
+begin
+  varname:='';
+  varvalue:='';
+  typevalue:=0;
+end;
+
+constructor TVariable.create(name: string; value: string);
+begin
+  varname:=Trim(name);
+  varvalue:=Trim(value);
+  typevalue:=0;
+end;
+
+function TVariable.validname(): boolean;
+var i: integer;
+begin
+  result:=false;
+  if(length(varname)=0) then exit;
+  i:=1;
+  if (ord(varname[i])<97) or (ord(varname[i])>122) then begin
+    exit;
+  end;
+  i:=2;
+  while (i<=Length(varname)) do begin
+         if (ord(varname[i])<48) or (ord(varname[i])>57) then begin
+           if (ord(varname[i])<97) or (ord(varname[i])>122) then begin
+             exit;
+           end;
+         end;
+         i:=i+1;
+   end;
+  result:=true;
+end;
+
+function ValidFloat(floatstr: string): boolean;
+begin
+  validfloat:=true;
+    try
+       StrToFloat(floatstr);
+    except
+      validfloat:=false;
+    end;
+end;
+
+function TVariable.validvalue(): boolean;
+var n:integer;
+var Parse: TParseMath;
+begin
+    Parse:=TParseMath.create();
+    Result:= true;
+    n:= length(varvalue);
+    typevalue:=0;
+    Result:=true;
+    if (n>1) and (varvalue[1]='{') and (varvalue[n]='}') then begin
+      varvector:=TSPila.create(varvalue);
+      typevalue:=1;
+      //showmessage('vector');
+      exit;
+    end;
+    if (n>1) and (varvalue[1]='[') and (varvalue[n]=']') and (validmat(varvalue)=true) then begin
+      varmatriz:=TMatriz.create(varvalue);
+      typevalue:=2;
+      //showmessage('matriz');
+      exit;
+    end;
+    if (n>1) and (varvalue[1]='''') and (varvalue[n]='''') then begin//matriz, vector, expresion
+      varvalue:=varvalue.Substring(1,length(varvalue)-2);
+      typevalue:=3;
+      //showmessage('expresion');
+      exit;
+    end;
+    Result:= false;
+end;
+
+end.
+

@@ -1,0 +1,173 @@
+unit class_raphson;
+
+{$mode objfpc}{$H+}
+
+interface
+ uses
+  Classes, SysUtils, fpexprpars,
+  FileUtil, Forms, Controls, Graphics, Dialogs, Grids,
+  ComCtrls, Spin, StdCtrls, Types, math,
+  ParseMath, vector, ListFloat, matrizX, Jacobiana, sPila, variable;
+
+type
+  TNgen = class
+    function Newton_Generalizado(vari,fun,val: TSPila): TSPila;
+  private
+    Jaco:TJacobiana;
+    MatJaco,MatFun,MatJF,Matval:TMatriz;
+  public
+    Parse:TParseMath;
+    n:Integer;
+    straux:String;
+    e,e1:float;
+    constructor create;
+  end;
+
+procedure raphson(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+
+implementation
+
+procedure raphson(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var vari,func,val: TSPila;
+var NGen: TNGen;
+begin
+    vari:=TSPila.create(Args[1].ResString);
+    NGen:=TNGen.Create;
+    NGen.n:=vari.Count;
+    func:=TSPila.create(Args[0].ResString);
+    val:=TSPila.create(Args[2].ResString);
+    ActualVariable:=TVariable.create(NGen.Newton_Generalizado(vari,func,val));
+    Result.ResString:=NGen.straux;
+    Result.ResFloat:=NaN;
+end;
+
+constructor TNGen.create();
+begin
+  e:=0.00001;
+end;
+
+function Escribir(Mat: TMatriz ;n,m:integer;A:TStringGrid):TStringGrid;
+var
+  i,j:integer;
+begin
+
+  for i:=0 to m-1 do
+     begin
+      for j:=0 to n-1  do
+       begin
+            A.Cells[i,j]:=FloatToStr(Mat.get_element(i,j));
+       end;
+     end;
+  Escribir:=A;
+end;
+
+{ TNgen }
+
+function {TNgen.}elim_filcol(i:Integer;j:Integer;mat:TMatriz):TMatriz;
+var
+  auxmat:TMatriz;
+  i1,j1,conti,contj:Integer;
+begin
+  auxmat:=TMatriz.create();
+  auxmat.def_matriz(mat.cfil-1,mat.ccol-1);
+  conti:=0;
+  contj:=0;
+  for i1:=0 to auxmat.cfil do
+  begin
+    contj:=0;
+    for j1:=0 to auxmat.ccol do
+    begin
+      if(i<>i1)and(j<>j1)then
+      begin
+        auxmat.set_element(conti,contj,mat.get_element(i1,j1));
+        contj:=contj+1;
+      end;
+    end;
+    if(i<>i1)then
+    begin
+      conti:=conti+1;
+    end;
+  end;
+  elim_filcol:=auxmat;
+
+end;
+
+{procedure TNgen.SpinEdit3Change(Sender: TObject);
+begin
+    FunctionsGrid.RowCount:=SpinEdit3.Value;
+    StringGrid8.RowCount:=SpinEdit3.Value;
+    VarGrid.RowCount:=SpinEdit3.Value;
+end;}
+
+function TNgen.Newton_Generalizado(vari,fun,val: TSPila): TSPila;
+var i,cont:integer;
+var Matvalaux:TMatriz;
+begin
+  straux:='';
+  e1:=e+1;
+  cont:=0;
+
+  Parse:=TParseMath.create();
+  MatFun:=TMatriz.create;
+  MatJF:=TMatriz.create;
+  Matval:=TMatriz.create;
+  Matvalaux:=TMatriz.create;
+
+  MatFun.def_matriz(n,1);
+  MatVal.def_matriz(n,1);
+
+  for i:=0 to n-1 do begin
+    Parse.AddVariable(vari.get(i),StrToFloat(val.get(i)));
+    Matval.set_element(i,0,StrToFloat(val.get(i)));
+  end;
+  for i:=0 to n-1 do begin
+    Parse.Expression:=fun.get(i);
+    MatFun.set_element(i,0,Parse.Evaluate());
+  end;
+
+
+  Jaco:=TJacobiana.create(vari,fun,val,n);
+  MatJaco:=TMatriz.create;
+  MatJaco:=Jaco.Evaluate();
+  MatJaco.inversamat();
+  MatJF:=multiplicacionmat(MatJaco,MatFun);
+  MatJF.redondear_vals(6);
+
+  for i:=0 to n-2 do begin
+    straux:=straux+val.get(i)+'   ';
+  end;
+  straux:=straux+val.get(n-1);
+  cont:=1;
+  while(e1>e)do
+  begin
+    val:=TSPila.create;
+    cont:=cont+1;
+    Matvalaux:=restarmat(Matval,MatJF);
+    e1:=RoundTo(Matvalaux.distancia(Matval),-6);
+    Matval:=Matvalaux;
+    for i:=0 to n-1 do begin
+      val.push(FloatToStr(Matval.get_element(i,0)));
+    end;
+    for i:=0 to n-1 do begin
+      Parse.NewValue(vari.get(i),StrToFloat(val.get(i)));
+      Matval.set_element(i,0,StrToFloat(val.get(i)));
+    end;
+
+    for i:=0 to n-1 do begin
+      Parse.Expression:=fun.get(i);
+      MatFun.set_element(i,0,Parse.Evaluate());
+    end;
+
+    Jaco:=TJacobiana.create(vari,fun,val,n);
+    MatJaco:=Jaco.Evaluate();
+    MatJaco.inversamat;
+
+    MatJF:=multiplicacionmat(MatJaco,MatFun);
+    MatJF.redondear_vals(6);
+    straux:=val.contenido(); //<---------------------------------ELIMINAR
+  end;
+  Result:= val;
+
+end;
+
+end.

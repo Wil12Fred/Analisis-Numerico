@@ -1,0 +1,52 @@
+unit trapecio;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+    Classes, SysUtils, matrizfloat,ParseMath;
+
+type
+  TIntegral=class
+    n: integer;
+    private
+    public
+      Parse: TParseMath;
+      points: TMFloat;
+      function f(x:real): real;
+      function trapecio(xleft: real; xright: real): real;
+      constructor create();
+  end;
+
+implementation
+
+constructor TIntegral.create();
+begin
+  Parse:=TParseMath.create();
+end;
+
+function TIntegral.f(x: real): real;
+begin
+  Parse.NewValue(Parse.identifier[0].Name,x);
+end;
+
+function TIntegral.trapecio(xleft: real; xright: real): real;
+var
+  h: real;
+  xk: real;
+  k: integer;
+begin
+  h:= xright-xleft/n;
+  xk:= xleft;
+  trapecio:=f(xk);
+  for k:=1 to n do begin
+    xk:=xk+h;
+    trapecio:=trapecio+2*f(xk);
+  end;
+  xk:=xk+h;
+  trapecio:=trapecio+f(xk);
+end;
+
+end.
+

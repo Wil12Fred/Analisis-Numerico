@@ -1,0 +1,49 @@
+unit liblistptrlist;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils,math,Dialogs,Grids, ListFloat;
+
+type
+    TMFloat= class
+    private
+      lista:TList;
+
+    public
+      fil :Integer;
+      col :Integer;
+      constructor create;
+      procedure push_list( list_rec : TLFloat );
+      function sub_list( i : Integer):TLFloat;
+end;
+
+implementation
+
+constructor TMFloat.create;
+begin
+    lista :=TList.Create;
+end;
+
+procedure TMFloat.push_list( list_rec : TLFloat );
+var
+  plist : ^TLFloat;
+begin
+     new(plist);
+     plist^:=list_rec;
+     lista.Add(plist);
+end;
+
+function TMFloat.sub_list( i : Integer ): TLFloat;
+var
+   plist : ^TLFloat;
+begin
+   new(plist);
+   plist:=lista.Items[i];
+   sub_list:= plist^;
+end;
+
+end.
+

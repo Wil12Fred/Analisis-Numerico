@@ -1,0 +1,37 @@
+object Frame3: TFrame3
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  Align = alClient
+  ClientHeight = 240
+  ClientWidth = 320
+  TabOrder = 0
+  DesignLeft = 711
+  DesignTop = 170
+  object CmdBox1: TCmdBox
+    Left = 0
+    Height = 240
+    Top = 0
+    Width = 320
+    Align = alClient
+    CaretColor = clWhite
+    CaretType = cartUser
+    CaretWidth = 1
+    CaretHeight = 13
+    CaretYShift = 3
+    OnInput = CmdBox1Input
+    LineCount = 1000
+    Font.Color = clSilver
+    Font.Height = -14
+    Font.Name = 'Lucida Grande'
+    BackGroundColor = clBlack
+    TabWidth = 60
+    HistoryMax = 10
+    InputSelColor = clBlue
+    InputSelBackGround = clWhite
+    CaretInterval = 500
+    EscapeCodeType = esctCmdBox
+    GraphicalCharacterWidth = 10
+  end
+end

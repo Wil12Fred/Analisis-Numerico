@@ -1,0 +1,70 @@
+unit taylorNumerico;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, fpexprpars, math;
+
+implementation
+
+procedure ExprTaylorSin(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var Taylor: TTaylor;
+begin
+   Taylor:=TTaylor.create;
+   Taylor.TaylorType:=0;
+   Taylor.x:= ArgToFloat(Args[0]);
+   Taylor.Error:=ArgToFloat(Args[1]);
+   Result.resFloat := Taylor.execute;
+end;
+
+procedure ExprTaylorCos(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var Taylor: TTaylor;
+begin
+   Taylor:=TTaylor.create;
+   Taylor.TaylorType:=1;
+   Taylor.x:= ArgToFloat(Args[0]);
+   Taylor.Error:=ArgToFloat(Args[1]);
+   Result.resFloat := Taylor.execute;
+end;
+
+procedure ExprTaylorExp(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var Taylor: TTaylor;
+begin
+   Taylor:=TTaylor.create;
+   Taylor.TaylorType:=2;
+   Taylor.x:= ArgToFloat(Args[0]);
+   Taylor.Error:=ArgToFloat(Args[1]);
+   Result.resFloat := Taylor.execute;
+end;
+
+procedure ExprTaylorSinD(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var Taylor: TTaylor;
+begin
+   Taylor:=TTaylor.create;
+   Taylor.TaylorType:=0;
+   Taylor.x:= ArgToFloat(Args[0]);
+   Result.resFloat := Taylor.execute;
+end;
+
+procedure ExprTaylorCosD(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var Taylor: TTaylor;
+begin
+   Taylor:=TTaylor.create;
+   Taylor.TaylorType:=1;
+   Taylor.x:= ArgToFloat(Args[0]);
+   Result.resFloat := Taylor.execute;
+end;
+
+procedure ExprTaylorExpD(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var Taylor: TTaylor;
+begin
+   Taylor:=TTaylor.create;
+   Taylor.TaylorType:=2;
+   Taylor.x:= ArgToFloat(Args[0]);
+   Result.resFloat := Taylor.execute;
+end;
+
+end.
+

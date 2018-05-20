@@ -1,0 +1,137 @@
+unit mathNumerico;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils,fpexprpars, math;
+
+function validfloat(floatstr:string): boolean;
+function IsNumber(AValue: TExprFloat): Boolean;
+procedure ExprFloor(var Result: TFPExpressionResult; Const Args: TExprParameterArray); // maximo entero
+Procedure ExprTan( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+Procedure ExprSin( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+Procedure ExprCos( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+Procedure ExprLn( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+Procedure ExprLog( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+Procedure ExprSQRT( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+Procedure ExprPower( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+
+implementation
+
+uses
+  variable;
+
+function ValidFloat(floatstr: string): boolean;
+begin
+  validfloat:=true;
+    try
+       StrToFloat(floatstr);
+    except
+      validfloat:=false;
+    end;
+end;
+
+function IsNumber(AValue: TExprFloat): Boolean;
+begin
+  result := not (IsNaN(AValue) or IsInfinite(AValue) or IsInfinite(-AValue));
+end;
+
+procedure ExprFloor(var Result: TFPExpressionResult; Const Args: TExprParameterArray); // maximo entero
+var
+  x: Double;
+begin
+   x := ArgToFloat( Args[ 0 ] );
+   if x > 0 then begin
+     Result.ResFloat:= trunc( x )
+
+   end else begin
+     Result.ResFloat:= trunc( x ) - 1;
+   end;
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+Procedure ExprTan( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x: Double;
+begin
+   x := ArgToFloat( Args[ 0 ] );
+   if IsNumber(x) and ((frac(x - 0.5) / pi) <> 0.0) then begin
+      Result.resFloat := tan(x)
+   end else
+     Result.resFloat := NaN;
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+Procedure ExprSin( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x: Double;
+begin
+   x := ArgToFloat( Args[ 0 ] );
+   Result.resFloat := sin(x);
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+
+Procedure ExprCos( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x: Double;
+begin
+   x := ArgToFloat( Args[ 0 ] );
+   Result.resFloat := cos(x);
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+Procedure ExprLn( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x: Double;
+begin
+    x := ArgToFloat( Args[ 0 ] );
+   if IsNumber(x) and (x > 0) then
+      Result.resFloat := ln(x)
+   else
+     Result.resFloat := NaN;
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+Procedure ExprLog( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x: Double;
+begin
+    x := ArgToFloat( Args[ 0 ] );
+   if IsNumber(x) and (x > 0) then
+      Result.resFloat := ln(x) / ln(10)
+
+   else
+     Result.resFloat := NaN;
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+Procedure ExprSQRT( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x: Double;
+begin
+    x := ArgToFloat( Args[ 0 ] );
+   if IsNumber(x) and (x > 0) then
+      Result.resFloat := sqrt(x)
+
+   else
+     Result.resFloat := NaN;
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+Procedure ExprPower( var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  x,y: Double;
+begin
+    x := ArgToFloat( Args[ 0 ] );
+    y := ArgToFloat( Args[ 1 ] );
+
+
+     Result.resFloat := power(x,y);
+   ActualVariable:=TVariable.create(Result.ResFloat);
+end;
+
+end.
+

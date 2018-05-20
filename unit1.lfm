@@ -1,0 +1,261 @@
+object Form1: TForm1
+  Left = 260
+  Height = 676
+  Top = 167
+  Width = 876
+  Align = alCustom
+  Caption = 'Form1'
+  ClientHeight = 676
+  ClientWidth = 876
+  Color = clWhite
+  OnCreate = FormCreate
+  LCLVersion = '1.6.4.0'
+  object Splitter1: TSplitter
+    Left = 618
+    Height = 676
+    Top = 0
+    Width = 5
+    Align = alRight
+    ResizeAnchor = akRight
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 676
+    Top = 0
+    Width = 618
+    Align = alClient
+    Caption = 'Panel1'
+    ClientHeight = 676
+    ClientWidth = 618
+    TabOrder = 1
+    object Panel3: TPanel
+      Left = 1
+      Height = 264
+      Top = 411
+      Width = 616
+      Align = alBottom
+      Caption = 'Panel3'
+      TabOrder = 0
+    end
+    object Panel4: TPanel
+      Left = 1
+      Height = 405
+      Top = 1
+      Width = 616
+      Align = alClient
+      Caption = 'Panel4'
+      Color = clWhite
+      ParentColor = False
+      TabOrder = 2
+      Visible = False
+    end
+    object Splitter2: TSplitter
+      Cursor = crVSplit
+      Left = 1
+      Height = 5
+      Top = 406
+      Width = 616
+      Align = alBottom
+      ResizeAnchor = akBottom
+    end
+  end
+  object Panel2: TPanel
+    Left = 623
+    Height = 676
+    Top = 0
+    Width = 253
+    Align = alRight
+    Caption = 'Panel2'
+    ClientHeight = 676
+    ClientWidth = 253
+    TabOrder = 2
+    object Splitter3: TSplitter
+      Cursor = crVSplit
+      Left = 1
+      Height = 5
+      Top = 259
+      Width = 251
+      Align = alBottom
+      Beveled = True
+      ResizeAnchor = akBottom
+    end
+    object Panel5: TPanel
+      Left = 1
+      Height = 411
+      Top = 264
+      Width = 251
+      Align = alBottom
+      Caption = 'Panel5'
+      ClientHeight = 411
+      ClientWidth = 251
+      TabOrder = 1
+      object PageControl1: TPageControl
+        Left = 1
+        Height = 409
+        Top = 1
+        Width = 249
+        ActivePage = TabSheet1
+        Align = alClient
+        TabIndex = 0
+        TabOrder = 0
+        object TabSheet1: TTabSheet
+          Caption = 'TabSheet1'
+          ClientHeight = 370
+          ClientWidth = 243
+          object ValueListEditor1: TValueListEditor
+            Left = 0
+            Height = 370
+            Top = 0
+            Width = 243
+            Align = alClient
+            FixedCols = 0
+            RowCount = 2
+            TabOrder = 0
+            Strings.Strings = (
+              ''
+            )
+            ColWidths = (
+              64
+              179
+            )
+          end
+        end
+        object TabSheet2: TTabSheet
+          Caption = 'TabSheet2'
+          ClientHeight = 370
+          ClientWidth = 243
+          object Button1: TButton
+            Left = 136
+            Height = 25
+            Top = 64
+            Width = 75
+            Caption = 'resizeY'
+            OnClick = Button1Click
+            TabOrder = 0
+          end
+          object Edit1: TEdit
+            Left = 136
+            Height = 22
+            Top = 40
+            Width = 80
+            TabOrder = 1
+            Text = '-5'
+          end
+          object Edit2: TEdit
+            Left = 136
+            Height = 22
+            Top = 16
+            Width = 80
+            TabOrder = 2
+            Text = '5'
+          end
+          object Button2: TButton
+            Left = 37
+            Height = 25
+            Top = 64
+            Width = 75
+            Caption = 'resizeX'
+            OnClick = Button2Click
+            TabOrder = 3
+          end
+          object Button3: TButton
+            Left = 37
+            Height = 25
+            Top = 104
+            Width = 75
+            Caption = 'unResizeX'
+            OnClick = Button3Click
+            TabOrder = 4
+          end
+          object Button4: TButton
+            Left = 136
+            Height = 25
+            Top = 104
+            Width = 75
+            Caption = 'unResizeY'
+            OnClick = Button4Click
+            TabOrder = 5
+          end
+          object Edit3: TEdit
+            Left = 40
+            Height = 22
+            Top = 40
+            Width = 75
+            TabOrder = 6
+            Text = '-5'
+          end
+          object Edit4: TEdit
+            Left = 40
+            Height = 22
+            Top = 16
+            Width = 75
+            TabOrder = 7
+            Text = '5'
+          end
+        end
+      end
+    end
+    object Panel6: TPanel
+      Left = 1
+      Height = 258
+      Top = 1
+      Width = 251
+      Align = alClient
+      Caption = 'Panel6'
+      ClientHeight = 258
+      ClientWidth = 251
+      TabOrder = 2
+      object ScrollBox1: TScrollBox
+        Left = 1
+        Height = 256
+        Top = 1
+        Width = 249
+        HorzScrollBar.Page = 156
+        VertScrollBar.Page = 249
+        Align = alClient
+        ClientHeight = 241
+        ClientWidth = 234
+        TabOrder = 0
+        object PageControl2: TPageControl
+          Left = 0
+          Height = 857
+          Top = 0
+          Width = 234
+          ActivePage = TabSheet4
+          Align = alClient
+          TabIndex = 1
+          TabOrder = 0
+          object TabSheet3: TTabSheet
+            Caption = 'TabSheet3'
+            ClientHeight = 816
+            ClientWidth = 228
+            object Memo1: TMemo
+              Left = 0
+              Height = 816
+              Top = 0
+              Width = 228
+              Align = alTop
+              Font.Height = -9
+              Font.Name = 'Lucida Grande'
+              ParentFont = False
+              TabOrder = 0
+            end
+          end
+          object TabSheet4: TTabSheet
+            Caption = 'TabSheet4'
+            ClientHeight = 818
+            ClientWidth = 228
+            object Memo2: TMemo
+              Left = 0
+              Height = 818
+              Top = 0
+              Width = 228
+              Align = alTop
+              TabOrder = 0
+            end
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,58 @@
+unit Lag;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils,ParseMath;
+
+type
+  TLag= class
+    size: integer;
+    DatX: array of real;
+    DatY: array of real;
+    //procedure sort();
+    function getFunction: string;
+    function getProduct(i: integer): string;
+    function interPolar(x: real): real;
+    end;
+implementation
+
+function TLag.getProduct(i: integer): string;
+var j: integer;
+begin
+   j:=0;
+   Result:='';
+   while(j<length(datx)) do begin
+     if(j<>i) then begin
+        Result:= Result+'(x'+'-'+FloatToStr(datx[j])+')/'+'('+FloatToStr(datx[i]-datx[j])+')*';
+     end;
+     j:=j+1;
+   end;
+   Result := Result+'1';
+end;
+
+function TLag.getFunction: string;
+var i: integer;
+begin
+   Result:='';
+   i:=0;
+   while(i<Length(datx)) do begin
+         Result:=Result+'(('+FloatToStr(daty[i])+')*('+getProduct(i)+'))+';
+         i:=i+1;
+   end;
+   Result:=Result+'0';
+end;
+
+function TLag.interPolar(x: real): real;
+var Parse: TParseMath;
+begin
+   Parse:= TParseMath.create();
+   Parse.Expression:=getFunction;
+   Parse.AddVariable('x',x);
+   Result:= Parse.Evaluate();
+end;
+
+end.
+
